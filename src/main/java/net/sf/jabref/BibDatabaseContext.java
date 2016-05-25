@@ -135,7 +135,7 @@ public class BibDatabaseContext {
             fileDirs.add(getFileDirectoryPath(metaDataDirectory.get()));
         }
 
-        // 3. preferences directory
+        // 3. preferences directory, e.g. psDirectory , pdfDirectory, ... TODO: reevaluate
         String dir = Globals.prefs.get(fieldName + Globals.DIR_SUFFIX); // FILE_DIR
         if (dir != null) {
             fileDirs.add(dir);
