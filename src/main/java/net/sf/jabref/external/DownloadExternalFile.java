@@ -161,20 +161,14 @@ public class DownloadExternalFile {
 
         String suggestedName = getSuggestedFileName(suffix);
         List<String> fDirectory = databaseContext.getFileDirectory();
-        String directory;
-        if (fDirectory.isEmpty()) {
-            directory = null;
-        } else {
-            directory = fDirectory.get(0);
-        }
-        final String suggestDir = directory == null ? System.getProperty("user.home") : directory;
+        final String suggestDir = fDirectory.get(0);
         File file = new File(new File(suggestDir), suggestedName);
         FileListEntry entry = new FileListEntry("", file.getCanonicalPath(), suggestedType);
         editor = new FileListEntryEditor(frame, entry, true, false, databaseContext);
         editor.getProgressBar().setIndeterminate(true);
         editor.setOkEnabled(false);
         editor.setExternalConfirm(closeEntry -> {
-            File f = directory == null ? new File(closeEntry.link) : expandFilename(directory, closeEntry.link);
+            File f = fDirectory.get(0) == null ? new File(closeEntry.link) : expandFilename(fDirectory.get(0), closeEntry.link);
             if (f.isDirectory()) {
                 JOptionPane.showMessageDialog(frame, Localization.lang("Target file cannot be a directory."),
                         Localization.lang("Download file"), JOptionPane.ERROR_MESSAGE);
@@ -195,15 +189,15 @@ public class DownloadExternalFile {
         }
         // Editor closed. Go on:
         if (editor.okPressed()) {
-            File toFile = directory == null ? new File(entry.link) : expandFilename(directory, entry.link);
+            File toFile = fDirectory.get(0) == null ? new File(entry.link) : expandFilename(fDirectory.get(0), entry.link);
             String dirPrefix;
-            if (directory == null) {
+            if (fDirectory.get(0) == null) {
                 dirPrefix = null;
             } else {
-                if (directory.endsWith(System.getProperty("file.separator"))) {
-                    dirPrefix = directory;
+                if (fDirectory.get(0).endsWith(System.getProperty("file.separator"))) {
+                    dirPrefix = fDirectory.get(0);
                 } else {
-                    dirPrefix = directory + System.getProperty("file.separator");
+                    dirPrefix = fDirectory.get(0) + System.getProperty("file.separator");
                 }
             }
 
@@ -216,7 +210,7 @@ public class DownloadExternalFile {
 
                 // If the local file is in or below the main file directory, change the
                 // path to relative:
-                if ((directory != null) && entry.link.startsWith(directory) &&
+                if ((fDirectory.get(0) != null) && entry.link.startsWith(fDirectory.get(0)) &&
                         (entry.link.length() > dirPrefix.length())) {
                     entry = new FileListEntry(entry.description, entry.link.substring(dirPrefix.length()), entry.type);
                 }

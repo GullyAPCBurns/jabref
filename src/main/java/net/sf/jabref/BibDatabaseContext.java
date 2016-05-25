@@ -115,6 +115,7 @@ public class BibDatabaseContext {
      * 2. metadata general directory
      * 3. preferences directory
      * 4. bib file directory
+     * 5. System.getProperty("user.home")
      *
      * @param fieldName The field type
      * @return The default directory for this field type.
@@ -150,6 +151,9 @@ public class BibDatabaseContext {
                 fileDirs.add(parentDir);
             }
         }
+
+        // 5. System.getProperty("user.home")
+        fileDirs.add(System.getProperty("user.home"));
 
         return fileDirs;
     }
