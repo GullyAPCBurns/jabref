@@ -1,9 +1,9 @@
-package net.sf.jabref.logic.formatter.bibtexfields;
+package net.sf.jabref.logic.formatter.tex;
 
 import net.sf.jabref.logic.formatter.Formatter;
 import net.sf.jabref.logic.l10n.Localization;
 
-public class RemoveLatexFormatter implements Formatter {
+public class AccentsFormatter implements Formatter {
 
     @Override
     public String getName() {
@@ -18,6 +18,9 @@ public class RemoveLatexFormatter implements Formatter {
     @Override
     public String format(String oldString) {
         String newValue = oldString;
+        // https://en.wikibooks.org/wiki/LaTeX/Special_Characters
+        // https://github.com/plk/biber/blob/dev/lib/Biber/LaTeX/recode_data.xml
+        // ftp://sunsite.icm.edu.pl/pub/CTAN/info/symbols/comprehensive/symbols-a4.pdf
         // Remove commands, e.g., \command[]{}, \command, \command{}
         // Remove math, e.g., $...$
         // Remove special syntax, e.g., ~
